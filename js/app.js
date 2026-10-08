@@ -24,11 +24,8 @@
             f=getFavorites(),
             next=f.includes(n)?f.filter(x=>x!==n):[n,
             ...f];
-            if (!f.includes(n) && f.length >= 5) {
-                return false;
-            }
             localStorage.setItem(STORAGE.favorites,
-            JSON.stringify([...new Set(next)].slice(0, 5)));
+            JSON.stringify([...new Set(next)]));
             window.dispatchEvent(new CustomEvent("favoriteschange"));
             return next.includes(n)
         },
