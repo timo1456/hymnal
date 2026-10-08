@@ -36,6 +36,8 @@
             }
 
             document.title = hymn.title + " · Hymnal";
+            HymnalPrefs.recordOpen(hymn.number);
+            window.dispatchEvent(new CustomEvent("hymnopen"));
 
             const sections = hymn.sections
                 .map((section) => {
