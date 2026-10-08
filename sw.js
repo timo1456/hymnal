@@ -1,1 +1,71 @@
-const CACHE_NAME="hymnal-v2";const APP_FILES=["./","./index.html","./hymn.html","./hymn-list.html","./css/style.css","./css/hymn.css","./js/app.js","./js/hymns.js","./js/hymn.js","./data/hymns.json","./manifest.json"];self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(APP_FILES)).then(()=>self.skipWaiting())));self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE_NAME).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;e.respondWith(caches.match(e.request).then(c=>c||fetch(e.request).then(r=>{if(r.ok&&new URL(e.request.url).origin===self.location.origin){const q=r.clone();caches.open(CACHE_NAME).then(x=>x.put(e.request,q))}return r}).catch(()=>caches.match("./index.html"))))});
+const CACHE_NAME = "hymnal-v3";
+
+const APP_FILES = [
+    "./",
+    "./index.html",
+    "./hymn.html",
+    "./hymn-list.html",
+    "./css/style.css",
+    "./css/hymn.css",
+    "./js/app.js",
+    "./js/hymns.js",
+    "./js/hymn.js",
+    "./data/hymns.json",
+    "./manifest.json"
+];
+
+self.addEventListener("install", (event) => {
+    event.waitUntil(
+        caches
+            .open(CACHE_NAME)
+            .then((cache) => cache.addAll(APP_FILES))
+            .then(() => self.skipWaiting())
+    );
+});
+
+self.addEventListener("activate", (event) => {
+    event.waitUntil(
+        caches
+            .keys()
+            .then((keys) =>
+                Promise.all(
+                    keys
+                        .filter((key) => key !== CACHE_NAME)
+                        .map((key) => caches.delete(key))
+                )
+            )
+            .then(() => self.clients.claim())
+    );
+});
+
+self.addEventListener("fetch", (event) => {
+    if (event.request.method !== "GET") {
+        return;
+    }
+
+    event.respondWith(
+        caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+
+            return fetch(event.request)
+                .then((response) => {
+                    if (
+                        response.ok &&
+                        new URL(event.request.url).origin ===
+                            self.location.origin
+                    ) {
+                        const responseClone = response.clone();
+
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, responseClone);
+                        });
+                    }
+
+                    return response;
+                })
+                .catch(() => caches.match("./index.html"));
+        })
+    );
+});
