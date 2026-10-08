@@ -1,4 +1,4 @@
-const CACHE_NAME = "hymnal-v3";
+const CACHE_NAME = "hymnal-v4";
 
 const APP_FILES = [
     "./",
