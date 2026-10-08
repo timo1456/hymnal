@@ -83,8 +83,6 @@
     }
     function initInstallPrompt() {
         const actions = document.querySelector(".header-actions");
-        if (!actions || !("BeforeInstallPromptEvent" in window) && !("onbeforeinstallprompt" in window)) return;
-
         const install = document.createElement("button");
         install.className = "install-button";
         install.type = "button";
