@@ -82,34 +82,34 @@
         })
     }
     function initInstallPrompt() {
-        const actions = document.querySelector(".header-actions");
-        const install = document.createElement("button");
-        install.className = "install-button";
-        install.type = "button";
-        install.textContent = "Install";
-        install.setAttribute("aria-label", "Install Hymnal app");
-        install.hidden = true;
-        install.addEventListener("click", async () => {
-            if (!deferredInstallPrompt) return;
-            deferredInstallPrompt.prompt();
-            await deferredInstallPrompt.userChoice;
-            deferredInstallPrompt = null;
-            install.hidden = true;
+        const actions=document.querySelector(".header-actions");
+        if(!actions)return;
+        const install=document.createElement("button");
+        install.className="install-button";
+        install.type="button";
+        install.textContent="Install";
+        install.setAttribute("aria-label","Install Hymnal app");
+        install.hidden=true;
+        const sync=()=>{
+            const installed=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true;
+            install.hidden=installed||!deferredInstallPrompt;
+            if(installed)deferredInstallPrompt=null;
+        };
+        install.addEventListener("click",async()=>{
+            if(!deferredInstallPrompt)return;
+            const promptEvent=deferredInstallPrompt;
+            promptEvent.prompt();
+            await promptEvent.userChoice;
+            deferredInstallPrompt=null;
+            sync();
         });
         actions.prepend(install);
-
-        window.addEventListener("beforeinstallprompt", (event) => {
-            event.preventDefault();
-            deferredInstallPrompt = event;
-            install.hidden = false;
-        });
-
-        window.addEventListener("appinstalled", () => {
-            deferredInstallPrompt = null;
-            install.hidden = true;
-        });
+        window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();deferredInstallPrompt=event;sync()});
+        window.addEventListener("appinstalled",()=>{deferredInstallPrompt=null;sync()});
+        window.addEventListener("pageshow",sync);
+        document.addEventListener("visibilitychange",()=>{if(!document.hidden)sync()});
+        sync();
     }
-
     function initThemeToggle() {
         const b=document.getElementById("theme-toggle");
         if(b)b.addEventListener("click",
