@@ -4,6 +4,7 @@
   "description": "A simple, accessible offline hymnal for live use.",
   "start_url": "./",
   "scope": "./",
+  "id": "./",
   "display": "standalone",
   "background_color": "#f7f9fc",
   "theme_color": "#2563eb",
