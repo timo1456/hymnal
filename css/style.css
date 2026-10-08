@@ -1068,9 +1068,9 @@ body.home-page{height:auto!important;min-height:0!important;overflow-x:hidden!im
 }
 @media(max-width:390px){.site-header,.home-shell{width:calc(100% - 14px)!important}.featured-hymn{min-height:195px!important;height:195px!important}}
 
-/* Common hymns + five-favorite limit */
+/* Common hymns section */
 .common-section{
-    order:5;
+    order:4;
     width:100%;
     padding:18px;
     border:1px solid var(--line);
@@ -1122,7 +1122,7 @@ body.home-page{height:auto!important;min-height:0!important;overflow-x:hidden!im
 }
 @media(max-width:760px){
     .common-section{
-        order:6;
+        order:4;
         padding:14px;
         border-radius:16px;
     }
