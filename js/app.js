@@ -4,7 +4,8 @@
     const STORAGE= {
         theme:"hymnal-theme",
         size:"hymnal-text-size",
-        favorites:"hymnal-favorites"
+        favorites:"hymnal-favorites",
+        openCounts:"hymnal-open-counts"
     },
     root=document.documentElement;
     const getFavorites=()=> {
@@ -23,10 +24,29 @@
             f=getFavorites(),
             next=f.includes(n)?f.filter(x=>x!==n):[n,
             ...f];
+            if (!f.includes(n) && f.length >= 5) {
+                return false;
+            }
             localStorage.setItem(STORAGE.favorites,
-            JSON.stringify([...new Set(next)]));
+            JSON.stringify([...new Set(next)].slice(0, 5)));
             window.dispatchEvent(new CustomEvent("favoriteschange"));
             return next.includes(n)
+        },
+        recordOpen(id) {
+            const n = Number(id);
+            if (!Number.isFinite(n)) return;
+            try {
+                const counts = JSON.parse(localStorage.getItem(STORAGE.openCounts) || "{}");
+                counts[n] = (Number(counts[n]) || 0) + 1;
+                localStorage.setItem(STORAGE.openCounts, JSON.stringify(counts));
+            } catch {}
+        },
+        getOpenCounts() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE.openCounts) || "{}");
+            } catch {
+                return {};
+            }
         }
     };
     function applyTheme(theme) {
@@ -211,8 +231,8 @@
         function renderFavorites() {
             const ids=HymnalPrefs.getFavorites(),
             saved=ids.map(id=>hymns.find(h=>h.number===id)).filter(Boolean).slice(0,
-            3);
-            count.textContent=ids.length?ids.length+" saved":"";
+            5);
+            count.textContent=ids.length ? ids.length + "/5 saved" : "";
             favorites.innerHTML="";
             if(!saved.length) {
                 favorites.innerHTML='<div class="empty-favorites">No favorites yet. Tap ☆ on any hymn to save it here.</div>';
@@ -228,7 +248,28 @@
         }
         renderFavorites();
         window.addEventListener("favoriteschange",
-        renderFavorites)
+        renderFavorites);
+
+        const common=document.getElementById("common-hymns");
+        if (common) {
+            const renderCommon=()=>{
+                const counts=HymnalPrefs.getOpenCounts();
+                const ranked=hymns
+                    .filter(h=>Number(counts[h.number])>0)
+                    .sort((a,b)=>(Number(counts[b.number])||0)-(Number(counts[a.number])||0));
+                const selected=ranked.length ? ranked.slice(0,5) : randomHymns(hymns,5);
+                const used=new Set(selected.map(h=>h.number));
+                randomHymns(hymns.filter(h=>!used.has(h.number)),5-selected.length)
+                    .forEach(h=>selected.push(h));
+                common.innerHTML=selected.map(h=>{
+                    const a=hymnLink(h,"common-hymn");
+                    a.innerHTML='<span class="common-number">'+String(h.number).padStart(3,"0")+'</span><span class="common-title">'+escapeHtml(h.title)+'</span><span class="row-arrow" aria-hidden="true">→</span>';
+                    return a.outerHTML;
+                }).join("");
+            };
+            renderCommon();
+            window.addEventListener("hymnopen", renderCommon);
+        }
     }
     function initList(hymns) {
         const input=document.getElementById("list-search"),
