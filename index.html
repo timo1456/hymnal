@@ -1,24 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#6f3d2e">
-<meta name="description" content="A simple, accessible offline hymnal for live use.">
-<link rel="manifest" href="./manifest.json">
-<link rel="stylesheet" href="./css/style.css">
-<title>Hymnal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <meta
+        name="description"
+        content="A simple, accessible offline hymnal for live use."
+    >
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Hymnal</title>
 </head>
 <body class="home-page">
-<div id="splash-screen" aria-label="Loading Hymnal"><div class="splash-content"><div class="book" aria-hidden="true"><div class="book-page book-page-left"></div><div class="book-page book-page-right"></div><div class="book-spine"></div><div class="cross"><span></span><span></span></div></div><div class="splash-title">Hymnal</div><div class="splash-subtitle">Songs of faith</div><div class="loading-line" aria-hidden="true"><span></span></div></div></div>
-<header class="site-header"><a class="brand" href="./index.html" aria-label="Hymnal home"><span class="brand-mark" aria-hidden="true">✝</span><span>Hymnal</span></a><div class="header-actions"><button class="icon-button" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">☾</button><button class="icon-button" id="settings-open" type="button" aria-label="Open settings" title="Settings">⚙</button></div></header>
-<main id="app" class="home-shell"><section class="home-main" aria-labelledby="home-title">
-<div class="welcome-line"><div><p class="eyebrow">Your hymnal</p><h1 id="home-title">Find a hymn.</h1></div><div class="today-badge">Today</div></div>
-<article id="hymn-of-day" class="featured-hymn"></article>
-<section class="search-section" aria-labelledby="search-heading"><h2 id="search-heading" class="section-title">Search hymns</h2><label class="search-box" for="home-search"><span aria-hidden="true">⌕</span><input id="home-search" type="search" autocomplete="off" placeholder="Search by name, number, words, author..." aria-label="Search hymns by name, number, words, author, composer, or first line"><button id="home-search-clear" class="clear-button" type="button" aria-label="Clear search" hidden>×</button></label><div id="home-search-results" class="search-results" aria-live="polite"></div><div id="search-demos" class="search-demos" aria-label="Search examples"></div></section>
-<section class="favorites-section" aria-labelledby="favorites-heading"><div class="section-heading-row"><h2 id="favorites-heading" class="section-title">Favorites</h2><span id="favorites-count" class="muted-count"></span></div><div id="favorites-preview" class="favorites-preview"></div></section>
-<a class="browse-button" href="./hymn-list.html"><span>Browse all hymns</span><span aria-hidden="true">→</span></a>
-</section></main>
-<div id="settings-modal" class="modal" hidden><div class="modal-backdrop" data-close-settings></div><section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title"><div class="panel-heading"><div><p class="eyebrow">Personalize</p><h2 id="settings-title">Settings</h2></div><button class="icon-button" type="button" data-close-settings aria-label="Close settings">×</button></div><div class="settings-group"><h3>Appearance</h3><div class="choice-row"><button class="choice-button" data-theme-choice="light" type="button">Light</button><button class="choice-button" data-theme-choice="dark" type="button">Dark</button></div></div><div class="settings-group"><h3>Text size</h3><div class="choice-row"><button class="choice-button" data-size-choice="small" type="button">A−</button><button class="choice-button" data-size-choice="normal" type="button">A</button><button class="choice-button" data-size-choice="large" type="button">A+</button><button class="choice-button" data-size-choice="xlarge" type="button">A++</button></div></div><p class="settings-note">Your preferences and favorites stay on this device. The hymnal does not require an account.</p></section></div>
-<script src="./js/hymns.js"></script><script src="./js/app.js"></script>
-</body></html>
+    <div id="splash-screen" aria-label="Loading Hymnal">
+        <div class="splash-content">
+            <div class="book" aria-hidden="true">
+                <div class="book-page book-page-left"></div>
+                <div class="book-page book-page-right"></div>
+                <div class="book-spine"></div>
+                <div class="cross">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="splash-title">Hymnal</div>
+            <div class="splash-subtitle">Songs of faith</div>
+            <div class="loading-line" aria-hidden="true">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <header class="site-header">
+        <a class="brand" href="./index.html" aria-label="Hymnal home">
+            <span class="brand-mark" aria-hidden="true">✝</span>
+            <span>Hymnal</span>
+        </a>
+
+        <div class="header-actions">
+            <button
+                class="icon-button"
+                id="theme-toggle"
+                type="button"
+                aria-label="Toggle dark mode"
+                title="Toggle dark mode"
+            >
+                ☾
+            </button>
+            <button
+                class="icon-button"
+                id="settings-open"
+                type="button"
+                aria-label="Open settings"
+                title="Settings"
+            >
+                ⚙
+            </button>
+        </div>
+    </header>
+
+    <main id="app" class="home-shell">
+        <section class="home-main" aria-labelledby="home-title">
+            <div class="welcome-line">
+                <div>
+                    <p class="eyebrow">Your hymnal</p>
+                    <h1 id="home-title">Find a hymn.</h1>
+                </div>
+                <div class="today-badge">Today</div>
+            </div>
+
+            <article id="hymn-of-day" class="featured-hymn"></article>
+
+            <section
+                class="search-section"
+                aria-labelledby="search-heading"
+            >
+                <h2 id="search-heading" class="section-title">
+                    Search hymns
+                </h2>
+
+                <label class="search-box" for="home-search">
+                    <span aria-hidden="true">⌕</span>
+                    <input
+                        id="home-search"
+                        type="search"
+                        autocomplete="off"
+                        placeholder="Search by name, number, words, author..."
+                        aria-label="Search hymns by name, number, words, author, composer, or first line"
+                    >
+                    <button
+                        id="home-search-clear"
+                        class="clear-button"
+                        type="button"
+                        aria-label="Clear search"
+                        hidden
+                    >
+                        ×
+                    </button>
+                </label>
+
+                <div
+                    id="home-search-results"
+                    class="search-results"
+                    aria-live="polite"
+                ></div>
+
+                <div
+                    id="search-demos"
+                    class="search-demos"
+                    aria-label="Search examples"
+                ></div>
+            </section>
+
+            <section
+                class="favorites-section"
+                aria-labelledby="favorites-heading"
+            >
+                <div class="section-heading-row">
+                    <h2 id="favorites-heading" class="section-title">
+                        Favorites
+                    </h2>
+                    <span id="favorites-count" class="muted-count"></span>
+                </div>
+
+                <div
+                    id="favorites-preview"
+                    class="favorites-preview"
+                ></div>
+            </section>
+
+            <a class="browse-button" href="./hymn-list.html">
+                <span>Browse all hymns</span>
+                <span aria-hidden="true">→</span>
+            </a>
+        </section>
+    </main>
+
+    <div id="settings-modal" class="modal" hidden>
+        <div class="modal-backdrop" data-close-settings></div>
+
+        <section
+            class="settings-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="settings-title"
+        >
+            <div class="panel-heading">
+                <div>
+                    <p class="eyebrow">Personalize</p>
+                    <h2 id="settings-title">Settings</h2>
+                </div>
+
+                <button
+                    class="icon-button"
+                    type="button"
+                    data-close-settings
+                    aria-label="Close settings"
+                >
+                    ×
+                </button>
+            </div>
+
+            <div class="settings-group">
+                <h3>Appearance</h3>
+                <div class="choice-row">
+                    <button
+                        class="choice-button"
+                        data-theme-choice="light"
+                        type="button"
+                    >
+                        Light
+                    </button>
+                    <button
+                        class="choice-button"
+                        data-theme-choice="dark"
+                        type="button"
+                    >
+                        Dark
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <h3>Text size</h3>
+                <div class="choice-row">
+                    <button
+                        class="choice-button"
+                        data-size-choice="small"
+                        type="button"
+                    >
+                        A−
+                    </button>
+                    <button
+                        class="choice-button"
+                        data-size-choice="normal"
+                        type="button"
+                    >
+                        A
+                    </button>
+                    <button
+                        class="choice-button"
+                        data-size-choice="large"
+                        type="button"
+                    >
+                        A+
+                    </button>
+                    <button
+                        class="choice-button"
+                        data-size-choice="xlarge"
+                        type="button"
+                    >
+                        A++
+                    </button>
+                </div>
+            </div>
+
+            <p class="settings-note">
+                Your preferences and favorites stay on this device.
+                The hymnal does not require an account.
+            </p>
+        </section>
+    </div>
+
+    <script src="./js/hymns.js"></script>
+    <script src="./js/app.js"></script>
+</body>
+</html>
