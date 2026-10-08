@@ -139,20 +139,34 @@
         favorites=document.getElementById("favorites-preview"),
         count=document.getElementById("favorites-count");
         if(!feature||!search)return;
-        const today=HymnalData.getHymnOfDay();
-        if(today) {
-            const link=hymnLink(today,
-            "featured-link");
-            link.innerHTML='<span class="hymn-number">'+String(today.number).padStart(3,
-            "0")+'</span><span class="featured-copy"><h2>'+escapeHtml(today.title)+'</h2><p>'+escapeHtml(today.author)+'</p></span><span class="featured-arrow" aria-hidden="true">→</span>';
-            feature.replaceChildren(link)
+        const randomHymns = (items, amount) => [...items]
+            .sort(() => Math.random() - 0.5)
+            .slice(0, Math.min(amount, items.length));
+
+        const today = randomHymns(hymns, 1)[0];
+        if (today) {
+            const link = hymnLink(today, "featured-link");
+            link.innerHTML =
+                '<span class="hymn-number">' + String(today.number).padStart(3, "0") +
+                '</span><span class="featured-copy"><small>Hymn of the Day</small><h2>' +
+                escapeHtml(today.title) + '</h2><p>' + escapeHtml(today.firstLine) +
+                '</p></span><span class="featured-arrow" aria-hidden="true">→</span>';
+            feature.replaceChildren(link);
         }
-        const demoQueries=["Amazing Grace",
-        "1",
-        "John Newton",
-        "grace",
-        "saved"];
-        demos.innerHTML=demoQueries.map(q=>'<button class="demo-chip" type="button" data-demo="'+escapeHtml(q)+'">'+escapeHtml(q)+"</button>").join("");
+
+        const suggestions = randomHymns(
+            hymns.filter(h => !today || h.number !== today.number),
+            5
+        );
+        demos.innerHTML = suggestions.map(h => {
+            const link = hymnLink(h, "demo-hymn");
+            link.innerHTML =
+                '<span class="demo-number">' + String(h.number).padStart(3, "0") +
+                '</span><span class="demo-copy"><strong>' + escapeHtml(h.title) +
+                '</strong><small>' + escapeHtml(h.firstLine) +
+                '</small></span><span class="row-arrow" aria-hidden="true">→</span>';
+            return link.outerHTML;
+        }).join("");
         function renderResults(q) {
             const matches=HymnalData.search(q).slice(0,
             6);
