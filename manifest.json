@@ -1,0 +1,6 @@
+{
+  "name": "Hymnal",
+  "short_name": "Hymnal",
+  "start_url": "/",
+  "display": "standalone"
+}
