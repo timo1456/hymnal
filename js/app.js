@@ -3,6 +3,19 @@ if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/sw.js");
     });
 }
+
 window.addEventListener("load", () => {
-    document.getElementById("splash-screen").classList.add("hide");
+    const splash = document.getElementById("splash-screen");
+
+    if (!splash) return;
+
+    // Let the animation play before revealing the main app.
+    setTimeout(() => {
+        splash.classList.add("hide");
+
+        // Remove it from the page after the fade-out.
+        setTimeout(() => {
+            splash.remove();
+        }, 850);
+    }, 3300);
 });
