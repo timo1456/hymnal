@@ -1,4 +1,6 @@
 (()=>  {
+    let deferredInstallPrompt = null;
+
     const STORAGE= {
         theme:"hymnal-theme",
         size:"hymnal-text-size",
@@ -79,6 +81,37 @@
             if(e.key==="Escape"&&!modal.hidden)close()
         })
     }
+    function initInstallPrompt() {
+        const actions = document.querySelector(".header-actions");
+        if (!actions || !("BeforeInstallPromptEvent" in window) && !("onbeforeinstallprompt" in window)) return;
+
+        const install = document.createElement("button");
+        install.className = "install-button";
+        install.type = "button";
+        install.textContent = "Install";
+        install.setAttribute("aria-label", "Install Hymnal app");
+        install.hidden = true;
+        install.addEventListener("click", async () => {
+            if (!deferredInstallPrompt) return;
+            deferredInstallPrompt.prompt();
+            await deferredInstallPrompt.userChoice;
+            deferredInstallPrompt = null;
+            install.hidden = true;
+        });
+        actions.prepend(install);
+
+        window.addEventListener("beforeinstallprompt", (event) => {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+            install.hidden = false;
+        });
+
+        window.addEventListener("appinstalled", () => {
+            deferredInstallPrompt = null;
+            install.hidden = true;
+        });
+    }
+
     function initThemeToggle() {
         const b=document.getElementById("theme-toggle");
         if(b)b.addEventListener("click",
@@ -235,8 +268,19 @@
             app.innerHTML='<div class="no-results"><strong>Hymnal data could not be loaded.</strong><br>Please refresh once the app has been installed or cached.</div>';
             console.error(e)
         }
-        if("serviceWorker"in navigator)window.addEventListener("load",
-        ()=>navigator.serviceWorker.register("./sw.js").catch(console.error));
+        initInstallPrompt();
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register("./sw.js", {
+                        updateViaCache: "none"
+                    });
+                    await registration.update();
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        }
         const splash=document.getElementById("splash-screen");
         if(splash) {
             const delay=window.matchMedia("(prefers-reduced-motion: reduce)").matches?500:3300;
