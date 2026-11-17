@@ -1671,85 +1671,90 @@ a {
    FIXED BOTTOM NAVIGATION
    Replaces the old sidebar.
    ============================================================ */
+/* Fixed navigation bar positioned at the bottom of the home page. */
 .bottom-nav {
-  /* Keeps the navigation bar fixed to the viewport instead of scrolling with the page. */
+  /* Fixes the navigation bar to the viewport so it stays visible while the page scrolls. */
   position: fixed;
-  /* Places the navigation above the page content. */
+  /* Keeps the navigation bar above the page content. */
   z-index: 50;
-  /* Moves the navigation's left edge to the horizontal centre of the viewport. */
+  /* Places the left edge at the horizontal midpoint of the viewport. */
   left: 50%;
-  /* Sets the distance between the navigation and the bottom edge of the viewport. */
+  /* Leaves a 16-pixel gap between the navigation bar and the viewport's bottom edge. */
   bottom: 16px;
-  /* Offsets the bar by half of its own width so it is truly centred. */
+  /* Shifts the bar left by half its own width to centre it precisely. */
   transform: translateX(-50%);
-  /* Sets the displayed width of an image used as a navigation icon. */
+  /* Sets a maximum width of 430 pixels while keeping 28 pixels of total side clearance on smaller screens. */
   width: min(430px, calc(100% - 28px));
-  /* Ensures the navigation has enough height for its items. */
+  /* Ensures the navigation bar is at least 68 pixels tall. */
   min-height: 68px;
-  /* Adds inner space between the bar's border and its navigation items. */
+  /* Creates space between the navigation bar's outer edge and its items. */
   padding: 7px;
-  /* Uses CSS Grid to arrange the navigation items. */
+  /* Turns the navigation container into a CSS Grid layout. */
   display: grid;
-  /* Creates three equal-width columns for the three navigation controls. */
+  /* Divides the bar into three equal columns for its three navigation items. */
   grid-template-columns: repeat(3, 1fr);
-  /* Adds a small space between adjacent navigation controls. */
+  /* Adds a 4-pixel gap between the navigation items. */
   gap: 4px;
-  /* Gives the bar a slightly transparent white background. */
+  /* Uses a nearly opaque white background so page content does not overpower the bar. */
   background: rgba(255,255,255,.94);
-  /* Adds a subtle outline around the navigation container. */
+  /* Draws a subtle outline around the navigation bar. */
   border: 1px solid rgba(220,223,227,.95);
-  /* Rounds the corners of each navigation item. */
+  /* Rounds the four outer corners of the navigation bar. */
   border-radius: 22px;
-  /* Adds depth so the fixed bar stands out from the page. */
+  /* Adds a soft shadow beneath the bar to separate it visually from the page. */
   box-shadow: 0 15px 45px rgba(15,18,22,.15);
-  /* Blurs content behind the translucent navigation bar where supported. */
+  /* Blurs content behind the translucent bar in browsers that support this effect. */
   backdrop-filter: blur(18px);
 }
+/* Shared layout and appearance for each navigation link or button. */
 .nav-item {
-  /* Adds a subtle outline around the navigation container. */
+  /* Removes the browser's default button border. */
   border: 0;
-  /* Gives the bar a slightly transparent white background. */
+  /* Keeps each navigation item transparent until it is hovered or active. */
   background: transparent;
-  /* Sets the default text and icon colour for an inactive navigation item. */
+  /* Sets the default muted colour for an inactive navigation item. */
   color: #777d85;
-  /* Removes the underline from navigation links. */
+  /* Removes the underline normally applied to anchor links. */
   text-decoration: none;
-  /* Rounds the corners of each navigation item. */
+  /* Rounds the corners of each individual navigation item. */
   border-radius: 17px;
-  /* Uses CSS Grid to arrange the navigation items. */
+  /* Uses Flexbox to arrange the contents of each navigation item. */
   display: flex;
-  /* Centres each item's contents across the horizontal axis. */
+  /* Centres the icon and label horizontally within the item. */
   align-items: center;
-  /* Centres each item's contents along the vertical axis. */
+  /* Centres the contents vertically within the item. */
   justify-content: center;
-  /* Stacks the icon/image and label vertically. */
+  /* Stacks the icon above its text label. */
   flex-direction: column;
-  /* Adds a small space between adjacent navigation controls. */
+  /* Adds a small vertical gap between the icon and its label. */
   gap: 3px;
-  /* Shows a pointer when a navigation item can be clicked. */
+  /* Displays a pointer cursor to indicate that the item is interactive. */
   cursor: pointer;
-  /* Allows an item to shrink inside its grid column without overflowing. */
+  /* Allows the item to shrink within its grid column without overflowing. */
   min-width: 0;
 }
+/* Visual feedback for the hovered item and the currently active item. */
 .nav-item:hover,
 .nav-item.active {
-  /* Gives the bar a slightly transparent white background. */
+  /* Highlights a navigation item when the pointer is over it or when it has the active class. */
   background: #f0f1f3;
-  /* Sets the default text and icon colour for an inactive navigation item. */
+  /* Uses a darker foreground colour for the hovered or active navigation item. */
   color: #15171a;
 }
+/* Dimensions and image fitting for navigation icons. */
 .nav-item img {
-  /* Sets the displayed width of an image used as a navigation icon. */
+  /* Sets the width of an image used as a navigation icon. */
   width: 24px;
-  /* Sets the displayed height of an image used as a navigation icon. */
+  /* Sets the height of an image used as a navigation icon. */
   height: 24px;
-  /* Keeps an icon image within its box without stretching it. */
+  /* Fits the icon inside its dimensions without distorting its proportions. */
   object-fit: contain;
 }
+/* Typography for the label shown below each navigation icon. */
 .nav-item > span:last-child {
-  /* Sets the label text size beneath a navigation icon. */
+  /* Sets the size of the navigation item's text label. */
   font-size: 10px;
-  /* Makes the navigation label easier to read. */
+  /* Makes the navigation label bold enough to remain legible. */
   font-weight: 700;
 }
 /* ============================================================
