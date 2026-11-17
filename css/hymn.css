@@ -40,11 +40,6 @@
   font-size:clamp(1.7rem,4vw,2.6rem);
   text-transform:uppercase
 }
-.hymn-author {
-  margin:8px 0 0;
-  color:var(--muted);
-  font-size:.9rem
-}
 .hymn-sections {
   display:grid;
   gap:22px
