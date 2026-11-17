@@ -1,0 +1,13 @@
+{
+  "AppVersion": "2.0",
+  "Title": "Test",
+  "Thumbnail": "",
+  "Preview": "",
+  "Desc": "Interactive neon particle waves, live clock and ambient NEXUS dashboard.",
+  "Author": "Timothy",
+  "License": "Personal use",
+  "Contact": "",
+  "Type": "web",
+  "FileName": "index.html",
+  "IsAbsolutePath": false
+}
